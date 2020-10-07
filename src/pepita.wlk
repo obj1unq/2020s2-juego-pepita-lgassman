@@ -81,7 +81,7 @@ object pepita {
 	
 	method checkearSiTerminoElJuego() {
 		if (self.estaCansada()) {
-			game.stop()
+			self.finalizarJuego()
 		} 
 	}
 	
@@ -104,6 +104,7 @@ object pepita {
 	
 	method finalizarJuego() {
 		// Esto ejecuta el bloque de código una vez en 2 segundos
+		game.removeTickEvent("GRAVEDAD")
 		game.schedule(2000, { game.stop() })
 	}
 
