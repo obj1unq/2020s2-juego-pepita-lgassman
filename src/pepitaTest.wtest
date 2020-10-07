@@ -1,0 +1,35 @@
+import wollok.game.*
+import pepita.*
+import comidas.*
+import extras.*
+
+test "Al comer pepita aumenta su energia" {
+	pepita.come(manzana)
+	assert.equals(140, pepita.energia())
+}
+
+test "Al volar pepita pierde energia" {
+	pepita.vola(1)
+	assert.equals(91, pepita.energia())
+}
+
+test "Al volar mucho pepita queda cansada" {
+	pepita.vola(100)
+	assert.that(pepita.estaCansada())
+}
+
+test "Al moverse pepita pierde energia por el trayecto" {
+	pepita.irA(game.at(1, 0))
+	assert.equals(91, pepita.energia())
+}
+
+test "Al moverse pepita queda en la nueva posicion" {
+	const nuevaPosicion = game.at(1, 1)
+	pepita.irA(nuevaPosicion)
+	assert.equals(nuevaPosicion, pepita.position())
+}
+
+test "Al estar en la misma posicion que el nido pepita crece" {
+	pepita.irA(nido.position())
+	assert.equals("pepita-grande.png", pepita.image())
+}
