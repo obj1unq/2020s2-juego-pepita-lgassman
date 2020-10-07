@@ -3,33 +3,92 @@ import pepita.*
 import comidas.*
 import extras.*
 
-test "Al comer pepita aumenta su energia" {
-	pepita.come(manzana)
-	assert.equals(140, pepita.energia())
+describe "Test de Pepita" {
+	
+	fixture {
+		// Código que se ejecuta antes de cada test
+		game.clear() // Arregla el bug que tiene game con los tests, para no mantener el estado.
+		game.height(10)
+		game.width(10)
+		game.addVisual(pepita)
+		game.addVisual(alpiste)
+	}
+
+	test "Al comer pepita aumenta su energia" {
+		pepita.come(manzana)
+		assert.equals(140, pepita.energia())
+	}
+
+	test "Al volar pepita pierde energia" {
+		pepita.vola(1)
+		assert.equals(91, pepita.energia())
+	}
+
+	test "Al volar mucho pepita queda cansada" {
+		pepita.vola(100)
+		assert.that(pepita.estaCansada())
+	}
+
+	test "Al moverse pepita pierde energia por el trayecto" {
+		pepita.irA(game.at(1, 0))
+		assert.equals(91, pepita.energia())
+	}
+
+	test "Al moverse pepita queda en la nueva posicion" {
+		const nuevaPosicion = game.at(1, 1)
+		pepita.irA(nuevaPosicion)
+		assert.equals(nuevaPosicion, pepita.position())
+	}
+
+	test "Al estar en la misma posicion que el nido pepita crece" {
+		pepita.irA(nido.position())
+		assert.equals("pepita-grande.png", pepita.image())
+	}
+
+	test "Al estar en la misma posicion que silvestre pepita está gris" {
+		pepita.irA(game.at(5, 0))
+		assert.equals("pepita-gris.png", pepita.image())
+	}
+
+
+//	ESTE TEST NO SE PUEDE HACER (con las herramientas que tenemos) 
+//	POR EL game.stop() QUE SE TERMINA EJECUTANDO
+//
+//	test "Pepita cuando viaja mucho y se cansa termina el juego" {
+//		pepita.irA(game.at(9, 9))
+//	}
+
+
+// TODO: Testear que cuando se va de la pantalla explota
+// TODO: Testear que al ir a dentro de la pantalla no explota y se queda en el mismo lugar
+
+	test "Pepita come y la comida desaparece del juego" {
+		pepita.irA(alpiste.position())
+		pepita.comerLaComidaQueTenesDebajo()
+		// Verificar que el alpiste no esté en el juego
+		assert.notThat(game.hasVisual(alpiste))
+	}
+
+	test "Pepita intenta comer una comida lejana" {
+		assert.throwsExceptionWithMessage("No hay comida acá", { pepita.comerLaComidaQueTenesDebajo()})
+	}
+
+// TODO: Testear el caerPorGravedad
+
 }
 
-test "Al volar pepita pierde energia" {
-	pepita.vola(1)
-	assert.equals(91, pepita.energia())
+
+describe "Tests de Silvestre" {
+	
+	test "Cuando pepita se mueve Silvestre la persigue" {
+		pepita.irA(game.at(5, 5))
+		assert.equals(game.at(5, 0), silvestre.position())
+	}
+
+	test "Silvestre no puede estar a la izquierda" {
+		pepita.irA(game.origin())
+		assert.equals(game.at(3, 0), silvestre.position())
+	}
+	
 }
 
-test "Al volar mucho pepita queda cansada" {
-	pepita.vola(100)
-	assert.that(pepita.estaCansada())
-}
-
-test "Al moverse pepita pierde energia por el trayecto" {
-	pepita.irA(game.at(1, 0))
-	assert.equals(91, pepita.energia())
-}
-
-test "Al moverse pepita queda en la nueva posicion" {
-	const nuevaPosicion = game.at(1, 1)
-	pepita.irA(nuevaPosicion)
-	assert.equals(nuevaPosicion, pepita.position())
-}
-
-test "Al estar en la misma posicion que el nido pepita crece" {
-	pepita.irA(nido.position())
-	assert.equals("pepita-grande.png", pepita.image())
-}

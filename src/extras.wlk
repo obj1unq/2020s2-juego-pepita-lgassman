@@ -8,7 +8,7 @@ object nido {
 	method image() = "nido.png"
 
 	method teEncontro(ave) {
-		game.stop()
+		ave.ganar()
 	}
 }
 
@@ -16,7 +16,10 @@ object silvestre {
 
 	method image() = "silvestre.png"
 
-	method position() = game.at(3, 0)
+	method position() = game.at(pepita.position().x().max(3), 0)
 
+	method teEncontro(ave) {
+		ave.perder()
+	}
 }
 

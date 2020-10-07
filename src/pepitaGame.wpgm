@@ -4,13 +4,14 @@ import niveles.*
 import extras.*
 import wollok.game.*
 
+// Main
 program PepitaGame {
 	game.title("Pepita")
 	game.height(10)
 	game.width(10)
 	game.boardGround("fondo2.jpg")
 
-	tutorial1.iniciar()
+	tutorial3.iniciar()
 
 	game.showAttributes(pepita) //Debug
 
