@@ -5,6 +5,8 @@ import extras.*
 
 describe "Test de Pepita" {
 	
+	const alpiste = new Alpiste()
+	
 	fixture {
 		// Código que se ejecuta antes de cada test
 		game.clear() // Arregla el bug que tiene game con los tests, para no mantener el estado.
@@ -15,6 +17,7 @@ describe "Test de Pepita" {
 	}
 
 	test "Al comer pepita aumenta su energia" {
+		const manzana = new Manzana()
 		pepita.come(manzana)
 		assert.equals(140, pepita.energia())
 	}

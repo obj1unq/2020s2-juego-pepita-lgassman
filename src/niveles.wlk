@@ -2,6 +2,7 @@ import pepita.*
 import comidas.*
 import extras.*
 import wollok.game.*
+import randomizer.*
 
 // Framework
 // Es como una librería / biblioteca.
@@ -23,8 +24,8 @@ object tutorial1 {
 object tutorial2 {
 
 	method iniciar() {
-		game.addVisual(manzana)
-		game.addVisual(alpiste)
+		game.addVisual( new Manzana() )
+		game.addVisual(new Alpiste() )
 		game.addVisual(nido)
 		game.addVisual(silvestre)
 		game.addVisual(pepita)
@@ -37,8 +38,8 @@ object tutorial2 {
 object tutorial3 {
 
 	method iniciar() {
-		game.addVisual(manzana)
-		game.addVisual(alpiste)
+		game.addVisual(new Manzana())
+		game.addVisual(new Alpiste())
 		game.addVisual(nido)
 		game.addVisual(silvestre)
 		game.addVisual(pepita)
@@ -51,6 +52,24 @@ object tutorial3 {
 	}
 
 }
+
+object tutorial4 {
+
+	method iniciar() {
+		game.addVisual(nido)
+		game.addVisual(silvestre)
+		game.addVisual(pepita)
+		config.configurarTeclas()
+		config.configurarGravedad()
+		config.configurarColisiones()
+		// En 1 minuto se pierde
+		game.schedule(1000 * 60, { pepita.perder() })
+		game.onTick(3000, "NUEVA_COMIDA", { generadorAlimentos.nuevoAlimento() })
+		game.say(pepita, "Tenés 1 min para llegar al nido.")
+	}
+
+}
+
 
 object config {
 

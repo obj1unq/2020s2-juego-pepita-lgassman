@@ -1,5 +1,6 @@
 import extras.*
 import wollok.game.*
+import comidas.*
 
 object pepita {
 
@@ -17,11 +18,11 @@ object pepita {
 
 	method come(comida) {
 		energia = energia + comida.energiaQueOtorga()
+        generadorAlimentos.removerAlimento(comida)
 	}
 
 	method comerLaComidaQueTenesDebajo() {
 		self.come(self.comidaDebajo())
-		game.removeVisual(self.comidaDebajo())
 	}
 	
 	method comidaDebajo() {

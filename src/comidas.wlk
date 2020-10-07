@@ -1,30 +1,73 @@
 import wollok.game.*
+import randomizer.*
 
-object manzana {
+class Manzana {
+
+	const property position = game.at(1, 8)
 
 	method image() = "manzana.png"
-
-	method position() = game.at(1, 8)
-
+	
 	method energiaQueOtorga() = 40
 
 	method teEncontro(ave) {
-		// No hace nada al colisionar
+		ave.come(self)
 	}
 
 }
 
-object alpiste {
+
+class Alpiste {
+
+	const property position = game.at(2, 2)
+	const peso = 70
 
 	method image() = "alpiste.png"
 
-	method position() = game.at(2, 2)
-
-	method energiaQueOtorga() = 70
+	method energiaQueOtorga() = peso
 
 	method teEncontro(ave) {
-		// No hace nada al colisionar
+		ave.come(self)
 	}
 
+}
+
+object manzanaFactory {
+   
+   method construirAlimento() {
+   		return new Manzana(position=randomizer.emptyPosition())
+   }	
+}
+
+object alpisteFactory {
+   method construirAlimento() {
+   		return new Alpiste(position=randomizer.emptyPosition(), peso = (40..100).anyOne())
+   }		
+}
+
+object generadorAlimentos{ 
+	
+	const alimentosGenerados = #{}
+	const maximo = 3
+    const factoriesAlimentos = [ manzanaFactory, alpisteFactory]; 
+    
+	
+	method nuevoAlimento() {
+	
+		if(alimentosGenerados.size() < maximo) {
+			const factoryElegida = factoriesAlimentos.get((0..factoriesAlimentos.size() - 1).anyOne() ) 
+			const nuevoAlimento = factoryElegida.construirAlimento()
+			game.addVisual(nuevoAlimento)
+			alimentosGenerados.add(nuevoAlimento)
+		}
+	}
+	
+	method removerAlimento(alimento) {
+		if(game.hasVisual(alimento)) {
+			game.removeVisual(alimento)
+			alimentosGenerados.remove(alimento)
+		}
+	}
+	
+	
 }
 

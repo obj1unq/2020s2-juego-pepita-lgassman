@@ -1,4 +1,5 @@
 import wollok.game.*
+
 object randomizer {
 		
 	method position() {
